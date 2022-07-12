@@ -1,0 +1,27 @@
+.menu-bars {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.nav-menu {
+    background-color: black;
+    width: 270px;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    top: 0px;
+    left: -100%;
+    transition: 800ms;
+    font-size: 24px;
+}
+
+.nav-menu.active {
+    left: 0px;
+    transition: 300ms;
+}
+
+.btn {
+    font-size: 24px;
+}

@@ -1,0 +1,45 @@
+.dash {
+    display: flex;
+    flex-direction: row;
+}
+.nav {
+    display: flex;
+    height: 100vh;
+    background-color: black;
+    width: 56px;
+    font-size: 32px;
+    position: fixed;
+}
+
+.nav a {
+    color: #fff;
+}
+
+.wrapper {
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 20px;
+    padding-left: 75px;
+    width: 100%;
+}
+
+.box-2 {
+    width: calc(100% / 2 - 20px);
+    box-sizing: border-box;
+    margin: 10px;
+    float: left;
+}
+.box-3 {
+    width: calc(100% / 3 - 20px);
+    box-sizing: border-box;
+    margin: 10px;
+    float: left;
+}
+
+.day-details {
+    display: none;
+}
+
+.day-details.active {
+    display: block;
+}
