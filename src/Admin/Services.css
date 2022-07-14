@@ -8,7 +8,6 @@
     background-color: black;
     width: 56px;
     font-size: 32px;
-    position: fixed;
 }
 
 .nav a {
@@ -21,30 +20,41 @@
     padding: 20px;
     padding-left: 75px;
     width: 100%;
+    margin: 0 auto;
 }
 
-.box-2 {
-    width: calc(100% / 2 - 20px);
-    box-sizing: border-box;
-    margin: 10px;
-    float: left;
-}
 .box-3 {
     width: calc(100% / 3 - 20px);
     box-sizing: border-box;
     margin: 10px;
     float: left;
 }
-
-.serviceDiv {
-    display: none;
-}
-
-.serviceDiv.visible {
-    display: block;
-}
-
-.half {
+.box-6 {
+    width: calc(66.66% - 20px);
+    box-sizing: border-box;
+    margin: 10px;
     float: left;
-    width: 50%;
+}
+
+.addService {
+    width: 33%;
+    float: right;
+}
+
+.addService::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+}
+
+@media only screen and (max-width: 900px) { 
+
+    .box-6, .box-3 {width: 90%;}
+
+    .addService {width: 100%;}
 }

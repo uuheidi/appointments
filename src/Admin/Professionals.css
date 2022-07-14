@@ -1,0 +1,109 @@
+a {
+    color: #000;
+}
+
+a:hover {
+    color: #424242;
+}
+.dash {
+    display: flex;
+    flex-direction: row;
+}
+.nav {
+    display: flex;
+    height: 100vh;
+    background-color: black;
+    width: 56px;
+    font-size: 32px;
+    position: fixed;
+}
+
+.nav a {
+    color: #fff;
+}
+
+.wrapper {
+    background-color: #fff;
+    box-sizing: border-box;
+    padding: 20px;
+    padding-left: 75px;
+    width: 100%;
+}
+
+.box-2 {
+    width: calc(100% / 2 - 20px);
+    box-sizing: border-box;
+    margin: 10px;
+    float: left;
+}
+.box-3 {
+    width: calc(100% / 3 - 20px);
+    box-sizing: border-box;
+    margin: 10px;
+    float: left;
+}
+
+.serviceDiv {
+    display: none;
+}
+
+.serviceDiv.visible {
+    display: block;
+}
+
+.half {
+    float: left;
+    width: 50%;
+}
+
+.row::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.description {
+    display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
+
+Button, input, textarea, select {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 18px;
+}
+
+select {
+    padding: 10px;
+    font-size: 18px;
+}
+
+textarea {
+    font-family: 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    height: 150px;
+}
+
+
+.profBtn {
+    background-color: #000;
+    padding: 10px;
+    font-size: 18px;
+    margin: 5px 0;
+    color: #fff;
+    text-align: center;
+    border: 0;
+}
+
+.profInput {
+    padding: 10px;
+    margin-bottom: 5px;
+}
+
+@media only screen and (max-width: 900px) { 
+
+    .box-2, .box-3 {width: 90%;}
+}
