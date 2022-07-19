@@ -28,17 +28,19 @@ function PCalender() {
  const [professional, setProfessional] = useState(false);
  const [role, setRole] = useState("");
  const [timeSlots, setTimeSlots] = useState([]);
-  const fetchUserName = async () => {
-    try {
-      const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setName(data.name);
-    } catch (err) {
-      console.error(err);
-      alert("An error occured while fetching user data");
-    }
-  };
+ 
+ const fetchUserName = async () => {
+  try {
+    const q = query(collection(db, "users"), where("uid", "==", user?.uid));
+    const doc = await getDocs(q);
+    const data = doc.docs[0].data();
+    let path = `${data.firstName}, ${data.lastName}`
+    setName(path);
+  } catch (err) {
+    console.error(err);
+  }
+};
+
   const fetchRole = async () => {
     try {
         const q = query(collection(db, "users"), where("uid", "==", user?.uid));
@@ -93,13 +95,15 @@ function PCalender() {
             index: index,
             pid: user.uid,
             cid: "",
-            customer: "",
+            customerFirstname: "",
+            customerLastname: "",
             title: "",
             date: moment(value).format("DD.MM.YYYY"),
             startTime: startTime,
             professional: name,
             status: "available",
-            timestamp: serverTimestamp(),
+            timeCreated: serverTimestamp(),
+            timeBooked: "",
             compilation: ""
           })
         }

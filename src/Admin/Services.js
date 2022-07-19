@@ -4,7 +4,7 @@ import { auth, db } from "../firebase";
 import { Link, useNavigate, createSearchParams } from "react-router-dom";
 import ANavbar from "../Components/Admin_Navbar";
 import { query, collection, getDocs, where } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Services.css'
+import './Style.css'
 import { Service } from "../Components/Service"
 
 
@@ -91,12 +91,12 @@ const navToEdit = (name) => {
         <h1>Palvelut </h1>
             <div className="box-3">
             {categories.map((cat, id) => {
-                return <div key={id}><button className="serviceBtn" onClick={() => fetchServices(cat.name)}>{cat.name}</button></div>
+                return <div key={id}><button className="colorBtn" onClick={() => fetchServices(cat.name)}>{cat.name}</button></div>
                })}
             </div>
             <div className="box-6">
               <div className="addService">
-                <button className="serviceBtn" onClick={() => navToAddService()}>Lisää palvelu</button>
+                <button className="colorBtn" onClick={() => navToAddService()}>Lisää palvelu</button>
             </div>
             {servicesInCategories.map((serv, id) => {
                 return (<div key={id} className={serviceVisible ? "serviceDiv visible" : "serviceDiv"}>
@@ -111,7 +111,7 @@ const navToEdit = (name) => {
 
                             <div className="row">
                         <div className="box-3">
-                        <button className="serviceBtn" onClick={() => navToEdit(serv.name)}>Muokkaa</button>
+                        <button className="colorBtn" onClick={() => navToEdit(serv.name)}>Muokkaa</button>
                           </div>
                           </div>
                         <hr />

@@ -4,9 +4,9 @@ import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import CNavbar from "../Components/Client_Navbar";
 import { query, collection, getDocs, where } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Dashboard.css'
+import './Style.css'
 
-function Dashboard() {
+function CDashboard() {
     const [user, loading, error] = useAuthState(auth);
   const [name, setName] = useState("");
   const navigate = useNavigate();
@@ -50,4 +50,4 @@ function Dashboard() {
   )
 }
 
-export default Dashboard
+export default CDashboard

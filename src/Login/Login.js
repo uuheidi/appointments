@@ -9,29 +9,34 @@ import { useAuthState } from "react-firebase-hooks/auth";
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [user, loading, error] = useAuthState(auth);
-    const [role, setRole] = useState("");
+    const [user, loading] = useAuthState(auth);
     const navigate = useNavigate();
 
     const fetchRole = async () => {
-        try {
+      try {
           const q = query(collection(db, "users"), where("uid", "==", user?.uid));
           const doc = await getDocs(q);
           const data = doc.docs[0].data();
-          setRole(data.role);
+          checkRole(data.role);
         } catch (err) {
           console.error(err);
+        
         }
-      };
+      
+    }
+    const checkRole = (role) => {
+      if (role === "admin") {
+       return navigate("/admin_dashboard"); 
+    }
+    else if (role === "professional") {
+      return navigate("/professional_dashboard")
+    }
+    else if (role === "client") {
+      return navigate("client_dashboard")
+    }
+    }
 
     useEffect(() => {
-        if (loading) {
-          // maybe trigger a loading screen
-          return;
-        }
-        
-        if (user && role === "client") navigate("/client_dashboard");
-        if (user && role === "professional") navigate("/professional_dashboard");
         fetchRole();
     }, [user, loading]);
   return (

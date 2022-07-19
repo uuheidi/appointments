@@ -10,6 +10,9 @@ import AddServices from '../Admin/Add_Services';
 import AServices from '../Admin/Services';
 import EditService from '../Admin/Edit_Service';
 import AProfessionals from '../Admin/Professionals';
+import AClients from '../Admin/Clients';
+import ADashboard from '../Admin/Dashboard';
+import Booking from '../Client/Booking';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 
@@ -31,6 +34,9 @@ function Main() {
       <Route path="admin_services" element={<AServices />} />
       <Route path="edit_service/:name" element={<EditService />} />
       <Route path="admin_professionals" element={<AProfessionals />} />
+      <Route path="admin_dashboard" element={<ADashboard />} />
+      <Route path="admin_clients" element={<AClients />} />
+      <Route path="client_booking" element={<Booking />} />
     </Routes>
   </Router>
 </div>

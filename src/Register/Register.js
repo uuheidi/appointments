@@ -5,56 +5,77 @@ import { auth, registerWithEmailAndPassword } from '../firebase';
 import './Register.css';
 
 function Register() {
-    const [email, setEmail] = useState('');
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [user, loading, error] = useAuthState(auth);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState("");
+    const [phone, setPhone] = useState("");
+    const [user, loading] = useAuthState(auth);
     const role = "client"
     const navigate = useNavigate();
     const register = () => {
-        if (!name) alert("Please enter a name");
-        registerWithEmailAndPassword(name, email, password, role);
+        try {
+        registerWithEmailAndPassword(firstName, lastName, email, password, phone, role);
+        navigate("/client_dashboard")
+        }
+        catch (err){
+            console.log(err);
+        }
+
     };
     useEffect(() => {
         if (loading) return;
         if (user) navigate("/")
-        if (user) navigate.replace("/");
     }, [user, loading]);
   return (
     <div className='register'>
         <div className='container'>
             <input
                 type="text"
-                class="txtBox"
-                value={name}
-                onChange={(n) => setName(n.target.value)}
-                placeholder="Firstname Lastname"
+                className="txtBox"
+                value={firstName}
+                onChange={(n) => setFirstName(n.target.value)}
+                placeholder="Etunimi"
+            />
+             <input
+                type="text"
+                className="txtBox"
+                value={lastName}
+                onChange={(n) => setLastName(n.target.value)}
+                placeholder="Sukunimi"
             />
             
             <input
                 type="text"
-                class="txtBox"
+                className="txtBox"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Email address"
+                placeholder="Sähköpostiosoite"
             />
 
             <input
                 type="password"
-                class="txtBox"
+                className="txtBox"
                 value={password}
                 onChange={(p) => setPassword(p.target.value)}
-                placeholder="********"
+                placeholder="Salasana"
             />
-        
+             <input
+                type="text"
+                className="txtBox"
+                value={phone}
+                onChange={(n) => setPhone(n.target.value)}
+                placeholder="Puhelinnumero"
+            />
+            
             <button
                 className='btn'
                 onClick={register}
             >
-                Register
+                Rekisteröidy
             </button>
         <div>
-            Already have an account? <Link to="/">Log in</Link>
+            Onko sinulla jo tunnus? <Link to="/">Kirjaudu sisään!</Link>
         </div>
         </div>
     </div>

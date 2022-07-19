@@ -3,8 +3,8 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import ANavbar from "../Components/Admin_Navbar";
-import { query, collection, getDocs, where, addDoc } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Add_Services.css'
+import { query, collection, getDocs, where, addDoc, serverTimestamp } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
+import './Style.css'
 import { ServiceShort } from "../Components/Service"
 
 
@@ -29,7 +29,8 @@ function AddServices() {
       const q = query(collection(db, "users"), where("uid", "==", user?.uid));
       const doc = await getDocs(q);
       const data = doc.docs[0].data();
-      setName(data.name);
+      let path = `${data.firstName}, ${data.lastName}`
+      setName(path);
     } catch (err) {
       console.error(err);
     }
@@ -102,7 +103,7 @@ const fetchServices = async (cat) => {
         category: cat,
         time: time,
         price: price,
-        createdAt: new Date(),
+        createdAt: serverTimestamp(),
         createdBy: user.uid,
         createdByName: name,
         description: description
@@ -132,7 +133,7 @@ const fetchServices = async (cat) => {
         <h1>Lisää palveluita</h1>
             <div className="box-3">
                {categories.map((cat, id) => {
-                return <div key={id}><button className="serviceBtn" onClick={() => fetchServices(cat.name)}>{cat.name}</button></div>
+                return <div key={id}><button className="colorBtn" onClick={() => fetchServices(cat.name)}>{cat.name}</button></div>
                })}
             </div>
             <div className="box-3">
@@ -161,7 +162,7 @@ const fetchServices = async (cat) => {
                     />
                 </div>
                 <div>
-                <button className="serviceBtn" onClick={() => handleCategoryClick(category)}>Lisää kategoria</button>
+                <button className="colorBtn" onClick={() => handleCategoryClick(category)}>Lisää kategoria</button>
                 </div>
                 <div>
                     <h3>Lisää palvelu</h3>
@@ -185,7 +186,7 @@ const fetchServices = async (cat) => {
                         <option key={name} value={name}>{name}</option>)}
                     </select>
                 </div>
-                <div>Kesto minuuteissa:</div>
+                <div>Kesto (0-60 min):</div>
                 <div>
                     <input
                         type="number"
@@ -209,7 +210,7 @@ const fetchServices = async (cat) => {
                     ></textarea>
                 </div>
                 <div>
-                    <button className="serviceBtn" onClick={() => handleSubmitService(serviceName, serviceCat, time, price, description)}>
+                    <button className="colorBtn" onClick={() => handleSubmitService(serviceName, serviceCat, time, price, description)}>
                        Lisää palvelu
                     </button>
                 </div>

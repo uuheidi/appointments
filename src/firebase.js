@@ -13,6 +13,7 @@ import {
   collection,
   where,
   addDoc,
+  serverTimestamp,
 } from "firebase/firestore";
 const firebaseConfig = {
     apiKey: "AIzaSyA4hT2D4Z1Lojk_MFEr5xc6we4TOvOjnKk",
@@ -36,16 +37,48 @@ const logInWithEmailAndPassword = async (email, password) => {
     alert(err.message);
   }
 };
-const registerWithEmailAndPassword = async (name, email, password, role) => {
+const registerWithEmailAndPassword = async (firstName, lastName, email, password, phone, role) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
     await addDoc(collection(db, "users"), {
       uid: user.uid,
-      name,
+      firstName,
+      lastName,
       authProvider: "local",
       email,
-      role
+      phone,
+      role,
+      createdAt: serverTimestamp()
+    });
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  }
+};
+
+const registerProfessionalWithEmailAndPassword = async (firstName, lastName, place, office, address, postnumber, postalDistrict, phone, email, password, createdBy, createdByName) => {
+  try {
+    const res = await createUserWithEmailAndPassword(auth, email, password);
+    const user = res.user;
+    await addDoc(collection(db, "users"), {
+      uid: user.uid,
+      authProvider: "local",
+      firstName: firstName,
+      lastName: lastName,
+      place: place,
+      office: office,
+      address: address,
+      postnumber: postnumber,
+      postalDistrict: postalDistrict,
+      phone: phone,
+      createdBy: createdBy,
+      createdByName: createdByName,
+      createdAt: serverTimestamp(),
+      description: "",
+      email: email,
+      password: password,
+      role: "professional"
     });
   } catch (err) {
     console.error(err);
@@ -69,6 +102,7 @@ export {
   db,
   logInWithEmailAndPassword,
   registerWithEmailAndPassword,
+  registerProfessionalWithEmailAndPassword,
   sendPasswordReset,
   logout,
   addDoc,

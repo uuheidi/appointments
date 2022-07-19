@@ -4,7 +4,7 @@ import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import ANavbar from "../Components/Admin_Navbar";
 import { query, collection, getDocs, where, setDoc, doc, deleteDoc } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Edit_Service.css'
+import './Style.css'
 import { useParams } from "react-router-dom";
 import { Service } from "../Components/Service"
 
@@ -162,7 +162,7 @@ const fetchServices = async (cat) => {
                         <option key={name} value={name}>{name}</option>)}
                     </select>
                 </div>
-                <div>Kesto minuuteissa:</div>
+                <div>Kesto (0-60 min):</div>
                 <div>
                     <input
                         type="number"
@@ -186,7 +186,7 @@ const fetchServices = async (cat) => {
                     ></textarea>
                 </div>
                 <div>
-                    <button className="serviceBtn" onClick={() => handleSubmitService(fetchedName, fetchedCat, fetchedTime, fetchedPrice, fetchedDesription)}>
+                    <button className="colorBtn" onClick={() => handleSubmitService(fetchedName, fetchedCat, fetchedTime, fetchedPrice, fetchedDesription)}>
                        Tallenna muutokset
                     </button>
                     <button className="deleteBtn" onClick={() => handleDeleteService()}>
