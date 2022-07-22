@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import CNavbar from "../Components/Client_Navbar";
 import { query, collection, getDocs, updateDoc, where, doc, setDoc, serverTimestamp } from "firebase/firestore";
 
-import './Style.css'
+import '../Style.css'
 import { Service } from "../Components/Service";
 
 

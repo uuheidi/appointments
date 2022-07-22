@@ -47,27 +47,27 @@ function Login() {
             class="txtBox"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="E-mail address"
+            placeholder="Sähköpostiosoite"
         />
         <input
             type="password"
             class="txtBox"
             value={password}
             onChange={(p) => setPassword(p.target.value)}
-            placeholder="**********"
+            placeholder="Salasana"
         />
 
         <button
-            className='btn'
+            className='colorBtn'
             onClick={() => logInWithEmailAndPassword(email, password)}
         >
-            Login
+            Kirjaudu sisään
         </button>
         <div>
-            <Link to="reset">Forgot password?</Link>
+            <Link to="reset">Unohtuiko salasana?</Link>
         </div>
         <div>
-            Don't have an account yet? <Link to="register">Register</Link>
+            Etkö ole vielä käyttäjä? <Link to="register">Rekisteröidy!</Link>
         </div>
 
         </div>

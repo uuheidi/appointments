@@ -4,9 +4,9 @@ import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import ANavbar from "../Components/Admin_Navbar";
 import { query, collection, getDocs, where, addDoc, serverTimestamp } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Style.css'
+import '../Style.css'
 import { ServiceShort } from "../Components/Service"
-
+import Header from "../Components/Header";
 
 
 function AddServices() {
@@ -54,36 +54,6 @@ function AddServices() {
   }
   }
 
-  const fetchCategories = async () => {
-    try {
-        const q = query(collection(db, "categories"));
-        const doc = await getDocs(q);
-        let cats =  [];
-        doc.docs.map((d) => {
-            cats.push(d.data())
-        })
-        setCategories(cats);
-      } catch (err) {
-        console.error(err);
-  }
-}
-
-const fetchServices = async (cat) => {
-    
-    try {
-        const q = query(collection(db, "services"), where("category", "==", cat));
-        const doc = await getDocs(q);
-        let serv =  [];
-        doc.docs.map((d) => {
-            serv.push(d.data())
-        })
-        setServicesInCategories(serv);
-        setServiceVisible(true);
-      } catch (err) {
-        console.error(err);
-  }
-}
-
   const handleCategoryClick = async (cat) => {
     await addDoc(collection(db, "categories"), {
         name: cat,
@@ -121,37 +91,18 @@ const fetchServices = async (cat) => {
     if (!user) return navigate("/");
     fetchUserName();
     fetchRole();
-    fetchCategories();
   }, [user, loading]);
   return (
     <div className="dash">
     <div className="nav">
             <ANavbar />
    </div>
+<Header />
    <div className="wrapper">
 
         <h1>Lisää palveluita</h1>
             <div className="box-3">
-               {categories.map((cat, id) => {
-                return <div key={id}><button className="colorBtn" onClick={() => fetchServices(cat.name)}>{cat.name}</button></div>
-               })}
-            </div>
-            <div className="box-3">
-               {servicesInCategories.map((serv, id) => {
-                return (<div key={id} className={serviceVisible ? "serviceDiv visible" : "serviceDiv"}>
-                        <ServiceShort
-                            name={serv.name}
-                            cat={serv.category}
-                            description={serv.description}
-                            time={serv.time}
-                            price={serv.price}
-                            />
-                </div>)
-               })
-            }
-               </div>
-            <div className="box-3">
-                <h3>Lisää palvelu kategoria</h3>
+            <h3>Lisää kategoria</h3>
                <div>
                 <input 
                     type="text"
@@ -164,6 +115,12 @@ const fetchServices = async (cat) => {
                 <div>
                 <button className="colorBtn" onClick={() => handleCategoryClick(category)}>Lisää kategoria</button>
                 </div>
+            </div>
+            <div className="box-3">
+             
+               </div>
+            <div className="box-3">
+               
                 <div>
                     <h3>Lisää palvelu</h3>
                 </div>

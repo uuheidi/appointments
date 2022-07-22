@@ -4,8 +4,10 @@ import { auth, db, registerProfessionalWithEmailAndPassword } from "../firebase"
 import { useNavigate } from "react-router-dom";
 import ANavbar from "../Components/Admin_Navbar";
 import { query, collection, getDocs, where, addDoc, deleteDoc, doc, serverTimestamp } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Style.css'
+import '../Style.css'
 import Professional_Profile from "../Components/Professional_Profile";
+import Header from "../Components/Header";
+import * as AiIcons from 'react-icons/ai';
 
 function AProfessionals() {
 
@@ -35,6 +37,10 @@ function AProfessionals() {
   const [profilePostalDistrict, setProfilePostalDistrict] = useState("");
   const [profilePhone, setProfilePhone] = useState("")
   const [createdAt, setCreatedAt] = useState("");
+  const [closeVisible, setCloseVisible] = useState(false);
+  const [addVisible, setAddVisible] = useState(true);
+  const [addingVisible, setAddingVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   
 
   const fetchUserName = async () => {
@@ -90,15 +96,13 @@ function AProfessionals() {
             let rnum = Math.floor(Math.random() * chars.length);
             genPassword += chars.substring(rnum,rnum+1);
         }
+        console.log(genPassword);
         
-        setCreatedBy(user.uid);
-        setCreatedByName(name);
-        setPassword(genPassword);
 
     try {
         
-    registerProfessionalWithEmailAndPassword(firstName, lastName, place, office, address, postnumber, postalDistrict, phone, email, password, createdBy, createdByName);
-    window.location.reload(true); 
+    registerProfessionalWithEmailAndPassword(firstName, lastName, place, office, address, postnumber, postalDistrict, phone, email, genPassword, user.uid, name);
+    
 }
     catch (err){
         console.log(err);
@@ -118,6 +122,18 @@ function AProfessionals() {
             setProfilePhone(phone);
             setCreatedAt(createdAt);
   }
+
+  const handleAddClick = () => {
+    setAddingVisible(true);
+    setCloseVisible(true);
+    setAddVisible(false);
+  }
+
+  const handleCloseClick = () => {
+    setAddingVisible(false);
+    setCloseVisible(false);
+    setAddVisible(true);
+  }
   
   useEffect(() => {
     if (loading) return;
@@ -127,15 +143,24 @@ function AProfessionals() {
     fetchProfessionals();
   }, [user, loading]);
   return (
-    <div className="dash">
+    <div>
     <div className="nav">
     <ANavbar />
     </div>
+    <Header />
     <div className="wrapper">
         <h1>Ammattilaiset</h1>
     <div className="box-3">
         <h3>Lista ammattilaisista</h3>
-        {professionals.map(prof => {
+        <input
+        type="text"
+        placeholder="Etsi ammattilainen"
+        className="padInput"
+        value={searchValue}
+        onChange={e => setSearchValue(e.target.value)}
+      />
+        {professionals.filter(prof => prof.firstName.match(new RegExp(searchValue, "i")) || prof.lastName.match(new RegExp(searchValue, "i")))
+          .map(prof => {
             return <button key={prof.createdAt} className="colorBtn" onClick={() => handleProfClick(prof.firstName, prof.lastName, prof.place, prof.office, prof.address, prof.postnumber, prof.postalDistrict, prof.phone, prof.createdAt)}>{prof.lastName}, {prof.firstName}</button>
             })}
     </div>
@@ -153,7 +178,14 @@ function AProfessionals() {
                 />
         </div>
     </div>
-    <div className="box-3">
+    <div className="box-3 adding">
+      <div className={closeVisible ? "closeDiv visible" : "closeDiv"}>
+            <button className="round" onClick={() => handleCloseClick()}><AiIcons.AiOutlineClose /></button>
+      </div>
+      <div className={addVisible ? "addDiv visible" : "addDiv"}>
+            <button className="round" onClick={() => handleAddClick()}><AiIcons.AiOutlineUserAdd /></button>
+      </div>
+      <div className={addingVisible ? "addingDiv visible" : "addingDiv"} >
         <h3>Lisää ammattilainen
         </h3>
         <input
@@ -220,6 +252,7 @@ function AProfessionals() {
             onChange={(p) => setEmail(p.target.value)}
             />
         <button className="colorBtn" onClick={() => register(firstName, lastName, place, office, address, postnumber, postalDistrict, phone, email)}>Lisää ammattilainen</button></div>
+    </div>
     </div>
     </div>
   )

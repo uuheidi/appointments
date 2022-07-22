@@ -4,7 +4,7 @@ import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import CNavbar from "../Components/Client_Navbar";
 import { query, collection, getDocs, where } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Style.css'
+import '../Style.css'
 
 function CDashboard() {
     const [user, loading, error] = useAuthState(auth);

@@ -4,7 +4,8 @@ import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import ANavbar from "../Components/Admin_Navbar";
 import { query, collection, getDocs, where, addDoc, serverTimestamp } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Style.css'
+import '../Style.css'
+import Header from "../Components/Header";
 
 function AClients() {
 
@@ -19,6 +20,7 @@ function AClients() {
   const [profileVisible, setProfileVisible] = useState(false);
   const [appointments, setAppointments] = useState([]);
   const [bookingVisible, setBookingVisible] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const fetchRole = async () => {
     try {
@@ -91,11 +93,22 @@ function AClients() {
         <div className='nav'>
             <ANavbar />
         </div>
+        <Header />
         <div className='wrapper'>
             <div className='box-3'>
-               {clients.map(client => {
-                return <button className="colorBtn" onClick={() => handleClientClick(client.firstName, client.lastName, client.email, client.phone, client.uid)}>{client.lastName}, {client.firstName}</button>
-               }) }
+            <input
+        type="text"
+        placeholder="Etsi asiakas"
+        className="padInput"
+        value={searchValue}
+        onChange={e => setSearchValue(e.target.value)}
+      />
+
+               {clients
+          .filter(name => name.firstName.match(new RegExp(searchValue, "i")) || name.lastName.match(new RegExp(searchValue, "i")))
+          .map(name => {
+            return <button key={name.uid} className="colorBtn" onClick={() => handleClientClick(name.firstName, name.lastName, name.email, name.phone, name.uid)}>{name.lastName}, {name.firstName}</button>
+              })}
             </div>
             <div className='box-3'>
                <div className={profileVisible ? "profileDiv visible" : "profileDiv"}> 
@@ -103,17 +116,17 @@ function AClients() {
                Sähköposti: {email}<br />
                Puhelinnumero: {phone}<br />
                <br />
-               <button onClick={() => handleLogClick()}>Näytä varaus loki</button>
+               <button className="colorBtn" onClick={() => handleLogClick()}>Näytä varaus loki</button>
                </div>
             </div>
             <div className="box-3">
             <div className={bookingVisible ? "bookingDiv visible" : "bookingDiv"}> 
                {appointments.map(item => {
-                return <div>Booking done: <br />
+                return <div>Varaus tehty: <br />
                 {item.timeBooked.toDate().toISOString()}<br />
-                            Date: {item.date}
+                            Päivämäärä: {item.date}
                             <br />
-                            Time: {item.startTime}</div>
+                            Aika: {item.startTime}</div>
                })}
                </div>
             </div>

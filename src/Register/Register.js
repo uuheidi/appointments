@@ -7,6 +7,7 @@ import './Register.css';
 function Register() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState('');
+    const [passwordAgain, setPasswordAgain] = useState("");
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState("");
     const [phone, setPhone] = useState("");
@@ -14,6 +15,7 @@ function Register() {
     const role = "client"
     const navigate = useNavigate();
     const register = () => {
+        if (password === passwordAgain) {
         try {
         registerWithEmailAndPassword(firstName, lastName, email, password, phone, role);
         navigate("/client_dashboard")
@@ -21,7 +23,10 @@ function Register() {
         catch (err){
             console.log(err);
         }
-
+    }
+    else {
+        alert("Salasanat eivät täsmää.")
+    }
     };
     useEffect(() => {
         if (loading) return;
@@ -59,6 +64,13 @@ function Register() {
                 value={password}
                 onChange={(p) => setPassword(p.target.value)}
                 placeholder="Salasana"
+            />
+            <input
+                type="password"
+                className="txtBox"
+                value={passwordAgain}
+                onChange={(p) => setPasswordAgain(p.target.value)}
+                placeholder="Salasana uudestaan"
             />
              <input
                 type="text"

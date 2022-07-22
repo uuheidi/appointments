@@ -3,16 +3,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import CNavbar from "../Components/Client_Navbar";
-import { query, collection, getDocs, updateDoc, where, doc, setDoc, serverTimestamp } from "firebase/firestore";
-import Container from "react-bootstrap/esm/Container";
-import './Style.css'
-import Button from "react-bootstrap/esm/Button";
+import { query, collection, getDocs, updateDoc, where, doc, serverTimestamp } from "firebase/firestore";
+import '../Style.css'
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from "moment";
-import Popup from "reactjs-popup";
-import { Service } from "../Components/Service";
-
+import Header from "../Components/Header"
+import * as MdIcons from 'react-icons/md';
 
 
 function Booking() {
@@ -23,7 +20,6 @@ function Booking() {
   const [services, setServices] = useState([{}]);
   const [serviceVisible, setServiceVisible] = useState(false);
   const [value, onChange] = useState(new Date());
-  const [calendarVisible, setCalendarVisible] = useState(false);
   const [showDay, setShowDay] = useState(false);
   const [freeTimes, setFreeTimes] = useState([]);
   const [bookingVisible, setBookingVisible] = useState(false);
@@ -42,6 +38,11 @@ function Booking() {
   const [duration, setDuration] = useState(0);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [calendarVisible, setCalendarVisible] = useState(false);
+  const [professionalsVisible, setProfessionalsVisible] = useState(true);
+  const [pickedProfessional, setPickedProfessional] = useState("");
+  const [professionals, setProfessionals] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
   
   const fetchUserName = async () => {
     try {
@@ -72,6 +73,22 @@ function Booking() {
     }
   };
 
+
+  const fetchProfessionals = async () => {
+    try {
+        const q = query(collection(db, "users"), where("role", "==", "professional"));
+        const doc = await getDocs(q);
+        let prof = [];
+        doc.docs.map((d) => {
+            prof.push(d.data())
+            
+        })
+        setProfessionals(prof);
+      } catch (err) {
+        console.error(err);
+  }
+  }
+
   const fetchServices = async () => {
     try {
         const q = query(collection(db, "services"));
@@ -90,10 +107,8 @@ function Booking() {
   const fetchTimes = async (value) => {
     try {
         console.log(value);
-        const q = query(collection(db, "appointments"), where("date", "==", value), where("status", "==", "available"));
+        const q = query(collection(db, "appointments"), where("date", "==", value), where("status", "==", "available"), where("professional", "==", pickedProfessional));
         const doc = await getDocs(q);
-        console.log(q)
-        console.log(doc)
         let times = [];
         doc.docs.map((time) => {
             times.push(time.data())
@@ -126,10 +141,9 @@ function Booking() {
     try {
       const q = query(collection(db, "services"), where("name", "==", pickedService));
       const doc = await getDocs(q);
-      console.log(q)
-      console.log(doc)
       let length = "";
       doc.docs.map((item) => {
+        console.log("length:", item.data().time)
          length = item.data().time
       })
       setDuration(length);
@@ -190,29 +204,68 @@ const ensureBooking = () => {
   countLength();
 }
 
+const handleClickProfessional = (firstName, lastName) => {
+  setCalendarVisible(true);
+  const prof = firstName + ", " + lastName;
+  console.log(prof)
+  setPickedProfessional(prof);
+  setProfessionalsVisible(false);
+}
+
+const handleBackClick = () => {
+  setCalendarVisible(false);
+  setProfessionalsVisible(true);
+  setBookingVisible(false);
+  setBookingInfoVisible(false);
+  setShowDay(false);
+}
+
+const pickService = (value) => {
+  setBookingInfoVisible(false);
+  setPickedService(value);
+}
+
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate("/");
     fetchUserName();
     fetchCategories();
+    fetchProfessionals();
   }, [user, loading]);
   return (
     <div className="dash">
     <div className="nav">
             <CNavbar />
    </div>
+   <Header />
    <div className="wrapper">
 
-        <h1>Welcome {name}</h1>
+        <h1>Ajanvaraus</h1>
             
             <div className="box-3">
+              <div className={professionalsVisible ? "professionalsDiv visible" : "professionalsDiv"}>
+              <input
+        type="text"
+        placeholder="Etsi ammattilainen"
+        className="padInput"
+        value={searchValue}
+        onChange={e => setSearchValue(e.target.value)}
+      />
+      {professionals.filter(prof => prof.firstName.match(new RegExp(searchValue, "i")) || prof.lastName.match(new RegExp(searchValue, "i")))
+          .map(prof => {
+            return <button key={prof.createdAt} className="colorBtn" onClick={() => handleClickProfessional(prof.firstName, prof.lastName)}>{prof.lastName}, {prof.firstName}</button>
+            })}
+              </div>
+          <div className={calendarVisible ? "calendarDiv visible" : "calendarDiv"}>
+            <button className="round left" onClick={() => handleBackClick()}><MdIcons.MdOutlineArrowBack /></button>
+            <div style={{paddingTop: 70}}>
                 <Calendar onChange={onChange} value={value} onClickDay={() => clickDay(value)}/>
-                
+                </div>
+                </div>
             </div>
 
           <div className="box-3">
           <div className={showDay ? "dayDiv visible" : "dayDiv"}>
-            {console.log("freetimes: ",freeTimes)}
                     {
                         freeTimes.sort((a, b) => a.index - b.index).map(time => {
                             console.log("endTime:", endTime)
@@ -229,7 +282,7 @@ const ensureBooking = () => {
 
           <div className="box-3">
             <div className={bookingVisible ? "bookingDiv visible" : "bookingDiv"}>
-                    <select value={pickedService} onChange={(o) => setPickedService(o.target.value)}>
+                    <select value={pickedService} onChange={(o) => pickService(o.target.value)}>
                       <option value="" disabled>Valitse palvelu</option>
                       {services.sort((a, b) => a.category.localeCompare(b.category)).map(item => {
                         return <option key={item.name} value={item.name}>{item.name}</option>
@@ -238,6 +291,8 @@ const ensureBooking = () => {
                     <button className="colorBtn" onClick={() => ensureBooking()}>Siirry varaamaan aika</button>
                     <div className={bookingInfoVisible ? "bookingInfoDiv visible" : "bookingInfoDiv"}>
                      <h3>Tarkista vielä tiedot</h3>
+                     {console.log(endTime)}
+                     Vastaanottaja: {pickedProfessional}<br/>
                      Aika: {pickedTime} - {moment(endTime).format("HH:mm")}<br />
                      Päivämäärä: {moment(value).format("DD.MM.YYYY")} <br />
                       Palvelu: {pickedService}<br />

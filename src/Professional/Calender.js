@@ -4,7 +4,7 @@ import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import PNavbar from "../Components/Professional_Navbar";
 import { query, collection, getDocs, where, addDoc, serverTimestamp } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Calender.css'
+import '../Style.css'
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import moment from "moment";

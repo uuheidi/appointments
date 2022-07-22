@@ -5,10 +5,7 @@ a {
 a:hover {
     color: #424242;
 }
-.dash {
-    display: flex;
-    flex-direction: row;
-}
+
 .nav {
     display: flex;
     height: 100vh;
@@ -23,11 +20,11 @@ a:hover {
 }
 
 .wrapper {
-    background-color: #fff;
     box-sizing: border-box;
     padding: 20px;
     padding-left: 75px;
     width: 100%;
+    max-width: 1024px;
 }
 
 .box-2 {
@@ -49,7 +46,8 @@ a:hover {
     float: left;
 }
 
-.bookingDiv, .bookingInfoDiv, .dayDiv {
+.serviceDiv, .profileDiv, .bookingDiv, .closeDiv, .addDiv, .addingDiv,
+.calendarDiv, .professionalsDiv, .bookingInfoDiv, .dayDiv {
     display: none;
 }
 
@@ -99,8 +97,9 @@ textarea {
 }
 
 .colorBtn {
-    background-color: #000;
-    padding: 10px;
+    background-color: #004242;
+    border-radius: 5px;
+    padding: 15px;
     font-size: 18px;
     margin: 5px 0;
     color: #fff;
@@ -110,7 +109,8 @@ textarea {
 
 .deleteBtn {
     background-color: darkred;
-    padding: 10px;
+    border-radius: 5px;
+    padding: 15px;
     font-size: 18px;
     margin: 5px 0;
     color: #fff;
@@ -118,6 +118,48 @@ textarea {
     border: 0;
 }
 
+.left {
+    float: left !important;
+}
+
+.addService {
+    float: right;
+}
+
+.addService::after {
+    display: block;
+    content: "";
+    clear: both;
+}
+
+.round {
+    width: 62px;
+    height: 62px;
+    font-size: 32px;
+    padding: 10px;
+    border-radius: 50%;
+    border: 0;
+    font-weight: bold;
+    background-color: #004242;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    float: right;
+}
+
+.round::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+
+.adding {
+    margin-top: -62px;
+    display: flex;
+    justify-content: right;
+    flex-direction: column;
+}
 
 @media only screen and (max-width: 900px) { 
 

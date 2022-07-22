@@ -45,8 +45,8 @@ function CNavbar() {
                     return (
                         <li key={index} className={page.cName}>
                             <Link to={page.path}><Button>
-                                {page.icon}
-                                <span>{page.title}</span>
+                            <span className="icon">{page.icon}</span>
+                                <span className='title'>{page.title}</span>
                                 </Button>
                             </Link>
                         </li>
@@ -55,8 +55,8 @@ function CNavbar() {
                 }
                 <li className='nav-text'>
                     <Button className='btn' onClick={logout}>
-                    <AiIcons.AiOutlineLogout />
-                    <span>Logout</span>
+                    <span className='icon'><AiIcons.AiOutlineLogout /></span>
+                    <span className='title'>Logout</span>
                     </Button>
                 </li>
             </ul>

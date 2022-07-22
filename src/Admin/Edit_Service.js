@@ -4,10 +4,10 @@ import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import ANavbar from "../Components/Admin_Navbar";
 import { query, collection, getDocs, where, setDoc, doc, deleteDoc } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Style.css'
+import '../Style.css'
 import { useParams } from "react-router-dom";
 import { Service } from "../Components/Service"
-
+import Header from "../Components/Header";
 
 
 function EditService() {
@@ -126,6 +126,7 @@ const fetchServices = async (cat) => {
     <div className="nav">
             <ANavbar />
    </div>
+<Header />
    <div className="wrapper">
 
         <h1>Muokkaa palvelua</h1>

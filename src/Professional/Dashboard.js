@@ -4,7 +4,7 @@ import { auth, db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import PNavbar from "../Components/Professional_Navbar";
 import { query, collection, getDocs, where } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Dashboard.css'
+import '../Style.css'
 
 
 function Dashboard() {

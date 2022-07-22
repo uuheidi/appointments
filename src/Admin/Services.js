@@ -4,9 +4,10 @@ import { auth, db } from "../firebase";
 import { Link, useNavigate, createSearchParams } from "react-router-dom";
 import ANavbar from "../Components/Admin_Navbar";
 import { query, collection, getDocs, where } from "firebase/firestore";import Container from "react-bootstrap/esm/Container";
-import './Style.css'
+import '../Style.css'
 import { Service } from "../Components/Service"
-
+import Header from "../Components/Header";
+import * as MdIcons from 'react-icons/md';
 
 
 function AServices() {
@@ -86,6 +87,7 @@ const navToEdit = (name) => {
     <div className="nav">
             <ANavbar />
    </div>
+<Header />
    <div className="wrapper">
 
         <h1>Palvelut </h1>
@@ -96,7 +98,7 @@ const navToEdit = (name) => {
             </div>
             <div className="box-6">
               <div className="addService">
-                <button className="colorBtn" onClick={() => navToAddService()}>Lisää palvelu</button>
+                <button className="round" onClick={() => navToAddService()}><MdIcons.MdAdd /></button>
             </div>
             {servicesInCategories.map((serv, id) => {
                 return (<div key={id} className={serviceVisible ? "serviceDiv visible" : "serviceDiv"}>

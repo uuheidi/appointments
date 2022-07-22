@@ -26,6 +26,13 @@ export const SidebarDataProfessional = [
     path: '../professional_calender',
     icon: <FaIcons.FaCalendarAlt />,
     cName: 'nav-text'
+  },
+  ,
+  {
+    title: 'Asetukset',
+    path: '../professional_settings',
+    icon: <RiIcons.RiSettings5Fill />,
+    cName: 'nav-text'
   }
   
 ]
@@ -53,6 +60,12 @@ export const SidebarDataClient = [
     path: '../client_booking',
     icon: <RiIcons.RiCalendarCheckFill />,
     cName: 'nav-text'
+  },
+  {
+    title: 'Asetukset',
+    path: '../client_settings',
+    icon: <RiIcons.RiSettings5Fill />,
+    cName: 'nav-text'
   }
 ]
 
@@ -75,6 +88,12 @@ export const SidebarDataAdmin = [
     title: 'Palvelut',
     path: '../admin_services',
     icon: <RiIcons.RiServiceFill />,
+    cName: 'nav-text'
+  },
+  {
+    title: 'Asetukset',
+    path: '../admin_settings',
+    icon: <RiIcons.RiSettings5Fill />,
     cName: 'nav-text'
   }
 ]

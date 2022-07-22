@@ -5,6 +5,9 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  updatePassword,
+  reauthenticateWithCredential,
+  EmailAuthProvider
 } from "firebase/auth";
 import {
   getFirestore,
@@ -32,10 +35,20 @@ const db = getFirestore(app);
 const logInWithEmailAndPassword = async (email, password) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
-  } catch (err) {
-    console.error(err);
-    alert(err.message);
+  } catch (error) {
+    
+  console.log('Failed with error code:', error.code);
+    switch(error.code) {
+      case 'auth/wrong-password':
+            error.message = "Väärä käyttäjätunnus tai salasana."
+            alert("Väärä käyttäjätunnus tai salasana.")
+            break;
+            case 'auth/user-not-found':
+              error.message = "Väärä käyttäjätunnus"
+              alert("Väärä käyttäjätunnus")
+              break;
   }
+}
 };
 const registerWithEmailAndPassword = async (firstName, lastName, email, password, phone, role) => {
   try {
@@ -97,6 +110,32 @@ const sendPasswordReset = async (email) => {
 const logout = () => {
   signOut(auth);
 };
+
+const user = auth.currentUser;
+const changePassword = async (newPassword, oldPassword) => {
+  const credential = EmailAuthProvider.credential(
+    auth.currentUser.email,
+    oldPassword
+)
+
+reauthenticateWithCredential(user, credential).then(() => {
+  
+updatePassword(user, newPassword).then(() => {
+ alert("Salasana vaihdettu onnistuneesti!")
+}).catch((error) => {
+  console.error(error)
+});
+}).catch((error) => {
+  switch(error.code) {
+    case 'auth/wrong-password':
+          error.message = "Nykyinen salasana väärin"
+          alert("Nykyinen salasana meni väärin.")
+          break;
+          
+ }
+ console.log(error)
+});
+}
 export {
   auth,
   db,
@@ -106,5 +145,6 @@ export {
   sendPasswordReset,
   logout,
   addDoc,
-  collection
+  collection,
+  changePassword
 };
